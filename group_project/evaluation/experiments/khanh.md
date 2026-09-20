@@ -1,4 +1,1 @@
-<!-- Thi nghiem cua khanh. Moi dong la mot row cua bang trong RESULT.md.
-     Dinh dang: | Experiment | Baseline | Metric delta | Latency/cost delta | Conclusion |
-     Khong can header bang, eval_pipeline tu ghep. File nay chi cua ban,
-     khong ai khac sua nen khong bao gio conflict. -->
+| **Contextual chunking** — prepend tiêu đề tài liệu vào text đem đi embed (`chunk_embedding_text()` trong Task 4). `chunk["content"]` giữ nguyên text gốc, chỉ vector mang thêm tiêu đề | Config A 0.537 / Config B 0.745 (đo lại với `CONTEXTUAL_CHUNKING = False`, cùng `max_workers=4`) | A **+0.210**, B **+0.106**. Context precision của B tăng mạnh nhất: 0.490 → 0.712 (+0.222); context recall 0.867 → 0.933 | Không đổi — tiêu đề chỉ thêm ~50 ký tự vào input của model embedding local, không phát sinh lời gọi API | **Xác nhận giả thuyết.** Số câu bị từ chối vì thiếu chunk giảm A 5→3, B 2→1. Ca kiểm chứng: chunk chứa điều kiện xét học bổng UET trước đó không lọt top-40 của dense (vì chỉ liệt kê "Khá trở lên", "15 tín chỉ", không mang từ khoá chủ đề), sau khi thêm tiêu đề lên hạng 34 và lọt top-5 của `retrieve()` |

@@ -174,6 +174,18 @@ def _normalize_metric_name(name: str) -> str | None:
     return None
 
 
+def _run_config():
+    """Giới hạn số request song song khi chấm.
+
+    Ragas mặc định bắn 16 request đồng thời. DeepSeek throttle ở mức đó, và
+    Ragas không raise mà âm thầm trả điểm 0 — cả một lần chạy ra toàn 0.000 mà
+    log sạch không một dòng lỗi. Hạ xuống 4 và tăng số lần retry.
+    """
+    from ragas.run_config import RunConfig
+
+    return RunConfig(max_workers=4, max_retries=15, timeout=180)
+
+
 def evaluate_with_ragas(rows: list[dict]):
     """Chạy Ragas trên predictions, trả về DataFrame điểm từng câu."""
     llm, embeddings = _build_evaluator()
@@ -208,7 +220,11 @@ def evaluate_with_ragas(rows: list[dict]):
             LLMContextPrecisionWithReference(),
         ]
         result = evaluate(
-            dataset=dataset, metrics=metrics, llm=llm, embeddings=embeddings
+            dataset=dataset,
+            metrics=metrics,
+            llm=llm,
+            embeddings=embeddings,
+            run_config=_run_config(),
         )
     else:
         from datasets import Dataset
@@ -228,7 +244,13 @@ def evaluate_with_ragas(rows: list[dict]):
             context_recall,
             context_precision,
         ]
-        result = evaluate(dataset, metrics=metrics, llm=llm, embeddings=embeddings)
+        result = evaluate(
+            dataset,
+            metrics=metrics,
+            llm=llm,
+            embeddings=embeddings,
+            run_config=_run_config(),
+        )
 
     frame = result.to_pandas()
     rename = {}
@@ -237,6 +259,24 @@ def evaluate_with_ragas(rows: list[dict]):
         if canonical and canonical not in rename.values():
             rename[column] = canonical
     return frame.rename(columns=rename)
+
+
+def _assert_run_is_usable(frame, config_label: str) -> None:
+    """Chặn trường hợp cả lượt chấm hỏng mà vẫn ghi ra báo cáo.
+
+    Điểm 0 ở một câu là kết quả hợp lệ (pipeline từ chối trả lời). Nhưng 0 ở
+    *mọi* câu và *mọi* metric thì không phải kết quả — đó là evaluator hỏng,
+    thường do bị throttle. Ghi một RESULT.md toàn 0.000 còn tệ hơn là dừng lại.
+    """
+    columns = [key for key in METRIC_KEYS if key in frame.columns]
+    if not columns:
+        raise RuntimeError(f"Config {config_label}: Ragas không trả về metric nào.")
+    if float(frame[columns].to_numpy().sum()) == 0.0:
+        raise RuntimeError(
+            f"Config {config_label}: toàn bộ điểm bằng 0 trên mọi câu và mọi "
+            "metric. Đây là evaluator hỏng chứ không phải kết quả — thường do "
+            "provider throttle. Thử hạ max_workers trong _run_config() rồi chạy lại."
+        )
 
 
 def summarize(frame) -> dict:
@@ -407,6 +447,7 @@ def main() -> None:
         print(f"Config {key} — {config['label']}")
         rows = run_config(golden_dataset, use_reranking=config["use_reranking"])
         frames[key] = evaluate_with_ragas(rows)
+        _assert_run_is_usable(frames[key], key)
         summaries[key] = summarize(frames[key])
         print(f"  -> average {_fmt(summaries[key]['average'])}\n")
 

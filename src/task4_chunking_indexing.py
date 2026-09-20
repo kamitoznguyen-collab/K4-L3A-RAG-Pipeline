@@ -47,6 +47,9 @@ EMBEDDING_DIM = 384
 
 COLLECTION_NAME = "rag_documents"
 
+# Prepend tiêu đề tài liệu vào text đem đi embed. Xem chunk_embedding_text().
+CONTEXTUAL_CHUNKING = True
+
 _MODEL = None
 
 _HEADING_PATTERN = re.compile(r"^#\s+(.+)$", re.MULTILINE)
@@ -195,9 +198,28 @@ def chunk_documents(documents: list[dict]) -> list[dict]:
     return chunks
 
 
+def chunk_embedding_text(chunk: dict) -> str:
+    """Text đem đi embed, có tiêu đề tài liệu làm ngữ cảnh.
+
+    Không đụng vào `chunk["content"]`: phần đó vẫn là text gốc để đưa vào LLM
+    và để contract test kiểm độ dài. Chỉ vector mới mang thêm tiêu đề.
+
+    Lý do: chunk chứa chi tiết (danh sách điều kiện, mức tiền, tiêu chí) thường
+    không mang từ khoá chủ đề nào, vì tên tài liệu chỉ xuất hiện ở chunk đầu.
+    Dense search vì thế không nối được câu hỏi "điều kiện xét học bổng UET" với
+    chunk chỉ liệt kê "Khá trở lên", "15 tín chỉ".
+    """
+    if not CONTEXTUAL_CHUNKING:
+        return chunk["content"]
+    title = chunk["metadata"].get("title", "")
+    if not title or chunk["content"].lstrip().startswith(title):
+        return chunk["content"]
+    return f"{title}\n\n{chunk['content']}"
+
+
 def embed_chunks(chunks: list[dict]) -> list[dict]:
     """Thêm embedding vào từng chunk, giữ nguyên các field khác."""
-    vectors = embed_texts([chunk["content"] for chunk in chunks])
+    vectors = embed_texts([chunk_embedding_text(chunk) for chunk in chunks])
     for chunk, vector in zip(chunks, vectors):
         chunk["embedding"] = vector
     return chunks
