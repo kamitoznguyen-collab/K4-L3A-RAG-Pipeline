@@ -174,8 +174,8 @@ def generate_with_citation(query: str, top_k: int = TOP_K) -> dict:
 
 if __name__ == "__main__":
     for query in [
-        "Shopee hỗ trợ những phương thức thanh toán nào?",
-        "Cần bằng chứng gì khi yêu cầu hoàn tiền?",
+        "Học bổng FPT có những mức nào?",
+        "Học bổng Sigma Gold có bao nhiêu suất?",
     ]:
         result = generate_with_citation(query)
         print(f"\nQ: {query}")

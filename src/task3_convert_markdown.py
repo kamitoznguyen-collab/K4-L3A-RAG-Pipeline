@@ -18,7 +18,7 @@ OUTPUT_DIR = Path(__file__).parent.parent / "data" / "standardized"
 MIN_CONTENT_CHARS = 200
 
 # MarkItDown trích text từ PDF theo vị trí ký tự nên chèn khoảng trắng đôi/ba
-# giữa các từ ("Shopee  hỗ  trợ"). Gom lại một space để BM25 và embedding đọc
+# giữa các từ ("học  bổng  toàn  phần"). Gom lại một space để BM25 và embedding đọc
 # đúng văn bản; xuống dòng giữ nguyên để không phá cấu trúc Markdown.
 _MULTISPACE = re.compile(r"[ \t]{2,}")
 

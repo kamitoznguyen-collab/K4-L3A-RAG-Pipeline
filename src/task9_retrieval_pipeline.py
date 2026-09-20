@@ -146,8 +146,8 @@ def retrieve(
 
 if __name__ == "__main__":
     queries = [
-        "Shopee hỗ trợ những phương thức thanh toán nào?",
-        "Làm sao để yêu cầu trả hàng hoàn tiền?",
+        "Điều kiện xét học bổng UET là gì?",
+        "Thư viện PTIT cho sinh viên mượn bao nhiêu tài liệu?",
         "xyzabc123nonsense",
     ]
     for query in queries:
