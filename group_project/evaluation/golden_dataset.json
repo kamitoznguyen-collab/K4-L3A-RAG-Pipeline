@@ -6,6 +6,18 @@
     "source_doc_id": "hoc-bong-uet-2025-2026"
   },
   {
+    "question": "Sinh viên chương trình Chất lượng cao của UET cần đạt loại gì để được xét học bổng?",
+    "expected_answer": "Kết quả học tập đạt loại Giỏi trở lên và rèn luyện đạt loại Tốt trở lên.",
+    "expected_context": "Chương trình Chất lượng cao, chương trình theo định mức kinh tế kỹ thuật, chương trình theo Thông tư 23: Kết quả học tập đạt loại Giỏi trở lên. Rèn luyện đạt loại Tốt trở lên.",
+    "source_doc_id": "hoc-bong-uet-2025-2026"
+  },
+  {
+    "question": "Sinh viên UET cần hoàn thành tối thiểu bao nhiêu tín chỉ trong học kỳ xét học bổng?",
+    "expected_answer": "Ít nhất 15 tín chỉ; trường hợp đặc biệt ít hơn cần có đề xuất từ Khoa/Viện.",
+    "expected_context": "Sinh viên cần hoàn thành ít nhất 15 tín chỉ trong học kỳ xét (các trường hợp đặc biệt ít hơn cần có đề xuất từ Khoa/Viện).",
+    "source_doc_id": "hoc-bong-uet-2025-2026"
+  },
+  {
     "question": "Quỹ học bổng khuyến khích học tập của UET được trích từ nguồn nào và bao nhiêu phần trăm?",
     "expected_answer": "Thường được trích 8% từ nguồn thu học phí hệ chính quy.",
     "expected_context": "Danh sách sinh viên nhận học bổng được lập dựa trên quỹ học bổng (thường được trích 8% từ nguồn thu học phí hệ chính quy), xét từ cao xuống thấp cho đến khi hết kinh phí.",
@@ -15,6 +27,24 @@
     "question": "Sinh viên hệ chính quy của PTIT được mượn tối đa bao nhiêu cuốn sách và trong bao lâu?",
     "expected_answer": "Tối đa 08 cuốn, thời hạn 01 học kỳ tương đương 150 ngày.",
     "expected_context": "Sinh viên hệ chính quy (cao đẳng, đại học): Số lượng tối đa 08 cuốn. Thời hạn mượn 01 học kỳ, tương đương 150 ngày.",
+    "source_doc_id": "noi-quy-thu-vien-ptit-sinh-vien"
+  },
+  {
+    "question": "Học viên cao học và nghiên cứu sinh tại PTIT được mượn tối đa bao nhiêu cuốn?",
+    "expected_answer": "Tối đa 05 cuốn, thời hạn 01 học kỳ tương đương 150 ngày.",
+    "expected_context": "Sinh viên hệ không chính quy, học viên cao học, nghiên cứu sinh: Số lượng tối đa 05 cuốn. Thời hạn mượn 01 học kỳ, tương đương 150 ngày.",
+    "source_doc_id": "noi-quy-thu-vien-ptit-sinh-vien"
+  },
+  {
+    "question": "Mỗi lượt vào kho mở, sinh viên PTIT được lấy tối đa bao nhiêu cuốn?",
+    "expected_answer": "Tối đa 02 cuốn sách tiếng Việt và 01 cuốn sách ngoại văn.",
+    "expected_context": "Mỗi lượt vào kho mở, sinh viên được lấy tối đa 02 cuốn sách tiếng Việt và 01 cuốn sách ngoại văn.",
+    "source_doc_id": "noi-quy-thu-vien-ptit-sinh-vien"
+  },
+  {
+    "question": "Sinh viên PTIT cần gì để được sử dụng dịch vụ thư viện?",
+    "expected_answer": "Xuất trình thẻ sinh viên do Học viện cấp.",
+    "expected_context": "Sinh viên đang học tập tại Học viện được sử dụng dịch vụ thư viện khi xuất trình thẻ sinh viên do Học viện cấp.",
     "source_doc_id": "noi-quy-thu-vien-ptit-sinh-vien"
   },
   {
@@ -30,9 +60,15 @@
     "source_doc_id": "noi-quy-thu-vien-ptit-can-bo"
   },
   {
+    "question": "Vi phạm nội quy thư viện PTIT bị xử lý thế nào?",
+    "expected_answer": "Nhắc nhở, phạt tiền, khóa thẻ từ 10 ngày đến vĩnh viễn, bồi thường tài liệu hư hỏng hoặc chuyển xử lý theo quy định pháp luật tùy mức độ.",
+    "expected_context": "Trường hợp vi phạm nội quy, thư viện áp dụng các biện pháp nhắc nhở, phạt tiền, khóa thẻ từ 10 ngày đến vĩnh viễn, yêu cầu bồi thường tài liệu hư hỏng hoặc chuyển xử lý theo quy định pháp luật tùy mức độ.",
+    "source_doc_id": "noi-quy-thu-vien-ptit-can-bo"
+  },
+  {
     "question": "Tổng ngân sách thí điểm của chương trình Học bổng Jensen Huang là bao nhiêu và phân bổ ra sao?",
     "expected_answer": "Tổng 1 triệu USD: 200.000 USD đầu tư trực tiếp cho sinh viên và 800.000 USD cung cấp tài nguyên GPU.",
-    "expected_context": "Tổng ngân sách thí điểm của chương trình là 1 triệu USD: 200.000 USD đầu tư trực tiếp cho sinh viên; 800.000 USD cung cấp tài nguyên GPU phục vụ các dự án nghiên cứu, khởi nghiệp và đổi mới sáng tạo trong lĩnh vực AI.",
+    "expected_context": "Tổng ngân sách thí điểm của chương trình là 1 triệu USD: 200.000 USD đầu tư trực tiếp cho sinh viên; 800.000 USD cung cấp tài nguyên GPU.",
     "source_doc_id": "hoc-bong-jensen-huang-2025"
   },
   {
@@ -42,33 +78,69 @@
     "source_doc_id": "hoc-bong-jensen-huang-2025"
   },
   {
+    "question": "Năm 2025 chương trình Jensen Huang dự kiến trao bao nhiêu suất học bổng?",
+    "expected_answer": "Khoảng 50 suất cho sinh viên xuất sắc trên toàn hệ thống ĐHQG-HCM.",
+    "expected_context": "Trong năm 2025, chương trình dự kiến trao khoảng 50 suất học bổng cho sinh viên xuất sắc trên toàn hệ thống ĐHQG-HCM.",
+    "source_doc_id": "hoc-bong-jensen-huang-2025"
+  },
+  {
+    "question": "Học bổng Jensen Huang dành cho sinh viên năm mấy?",
+    "expected_answer": "Sinh viên năm 4, năm cuối hoặc mới tốt nghiệp tại các trường thành viên ĐHQG-HCM.",
+    "expected_context": "Chương trình dành cho sinh viên năm 4, năm cuối hoặc mới tốt nghiệp tại các trường thành viên của ĐHQG-HCM.",
+    "source_doc_id": "hoc-bong-jensen-huang-2025"
+  },
+  {
     "question": "Học bổng Sigma Gold hỗ trợ sinh viên những gì về tài chính?",
     "expected_answer": "Hỗ trợ 100% học phí và cấp sinh hoạt phí lên tới 15.000.000 đồng/tháng, cấp 10 tháng mỗi năm học.",
     "expected_context": "Hỗ trợ tài chính: Hỗ trợ 100% học phí và cấp sinh hoạt phí lên tới 15.000.000 đồng/tháng. Mỗi học kỳ được cấp 05 tháng, tương đương 10 tháng/năm học.",
     "source_doc_id": "hoc-bong-sigma-gold-2026"
   },
   {
+    "question": "Mỗi khóa có tối đa bao nhiêu suất học bổng Sigma Gold?",
+    "expected_answer": "Tối đa 05 suất mỗi khóa.",
+    "expected_context": "Số lượng: Tối đa 05 suất đối với học bổng Sigma Gold mỗi khóa.",
+    "source_doc_id": "hoc-bong-sigma-gold-2026"
+  },
+  {
     "question": "Bài luận nộp hồ sơ học bổng Sigma Gold có yêu cầu gì về hình thức?",
     "expected_answer": "Độ dài không quá 04 trang A4, trình bày bằng LaTeX, nộp kèm tệp nguồn và bản PDF.",
-    "expected_context": "Bài luận: Trình bày về một định lý, khái niệm, ý tưởng hoặc ứng dụng Toán học mà sinh viên yêu thích (độ dài không quá 04 trang A4, trình bày bằng LaTeX, nộp kèm tệp nguồn và bản PDF).",
+    "expected_context": "Bài luận: độ dài không quá 04 trang A4, trình bày bằng LaTeX, nộp kèm tệp nguồn và bản PDF.",
+    "source_doc_id": "hoc-bong-sigma-gold-2026"
+  },
+  {
+    "question": "Sinh viên ứng tuyển Sigma Gold phải qua hình thức tuyển chọn nào?",
+    "expected_answer": "Phải trải qua vòng phỏng vấn trực tiếp do Giáo sư Ngô Bảo Châu và các nhà khoa học từ VIASM thực hiện.",
+    "expected_context": "Hình thức tuyển chọn: Sinh viên phải trải qua vòng phỏng vấn trực tiếp do Giáo sư Ngô Bảo Châu và các nhà khoa học từ VIASM thực hiện.",
     "source_doc_id": "hoc-bong-sigma-gold-2026"
   },
   {
     "question": "Học bổng FPTU Tuổi 18 trị giá bao nhiêu và yêu cầu điểm thi thế nào?",
-    "expected_answer": "Trị giá 180 triệu đồng/suất, trừ trực tiếp 20 triệu đồng mỗi học kỳ chuyên ngành trong 9 học kỳ; yêu cầu điểm tổ hợp 3 môn đạt từ 25 điểm trở lên.",
-    "expected_context": "Tiêu chí điểm: Điểm tổ hợp 3 môn (Toán + 2 môn bất kỳ) trong kỳ thi tốt nghiệp THPT năm 2024 đạt từ 25 điểm trở lên. Giá trị: 180 triệu đồng/suất, thực hiện bằng cách trừ trực tiếp 20 triệu đồng/học kỳ chuyên ngành (áp dụng cho 9 học kỳ).",
+    "expected_answer": "Trị giá 180 triệu đồng/suất, trừ 20 triệu đồng mỗi học kỳ chuyên ngành trong 9 học kỳ; yêu cầu điểm tổ hợp 3 môn từ 25 điểm trở lên.",
+    "expected_context": "Tiêu chí điểm: Điểm tổ hợp 3 môn (Toán + 2 môn bất kỳ) đạt từ 25 điểm trở lên. Giá trị: 180 triệu đồng/suất, trừ trực tiếp 20 triệu đồng/học kỳ chuyên ngành (áp dụng cho 9 học kỳ).",
     "source_doc_id": "hoc-bong-fpt-2024"
   },
   {
     "question": "Kỳ thi học bổng Đại học FPT có các mức học bổng nào?",
-    "expected_answer": "Đa dạng các mức 10%, 30%, 50%, 70% và 100% học phí toàn khóa học, tùy điểm số đạt được tại kỳ thi.",
+    "expected_answer": "Các mức 10%, 30%, 50%, 70% và 100% học phí toàn khóa học, tùy điểm số đạt được.",
     "expected_context": "Mức học bổng: Đa dạng các mức 10%, 30%, 50%, 70% và 100% học phí toàn khóa học, tùy theo điểm số đạt được tại kỳ thi.",
     "source_doc_id": "hoc-bong-fpt-2024"
   },
   {
+    "question": "Học bổng Trường THPT của Đại học FPT trao cho bao nhiêu học sinh mỗi trường và cần điều kiện gì?",
+    "expected_answer": "01 học sinh xuất sắc mỗi trường THPT, cần tốt nghiệp THPT năm 2024, đạt Top 10 SchoolRank 2024 và được Ban giám hiệu xác nhận đề cử.",
+    "expected_context": "Số lượng: 01 học sinh xuất sắc của mỗi trường THPT. Tiêu chí: Tốt nghiệp THPT năm 2024. Đạt xếp hạng Top 10 trên hệ thống SchoolRank 2024. Được Ban giám hiệu trường THPT xác nhận và đề cử.",
+    "source_doc_id": "hoc-bong-fpt-2024"
+  },
+  {
+    "question": "Sau khi nhận chứng nhận học bổng FPT, sinh viên cần nộp khoản phí nào?",
+    "expected_answer": "Phí giữ chỗ, thường là 5.000.000 VNĐ, để xác nhận nhập học.",
+    "expected_context": "Sau khi nhận chứng nhận học bổng, sinh viên cần hoàn thành khoản phí giữ chỗ (thường là 5.000.000 VNĐ) để xác nhận việc nhập học.",
+    "source_doc_id": "hoc-bong-fpt-2024"
+  },
+  {
     "question": "Học phí ngành Dược học tại Đại học Tôn Đức Thắng năm 2026 là bao nhiêu?",
-    "expected_answer": "68,46 triệu đồng/năm, cao hơn mức 31,26 – 36,59 triệu đồng/năm của chương trình tiêu chuẩn.",
-    "expected_context": "Chương trình tiêu chuẩn: Học phí trung bình dao động từ 31,26 – 36,59 triệu đồng/năm tùy ngành. Riêng ngành Dược học có mức học phí là 68,46 triệu đồng/năm.",
+    "expected_answer": "68,46 triệu đồng/năm, cao hơn mức 31,26-36,59 triệu đồng/năm của chương trình tiêu chuẩn.",
+    "expected_context": "Chương trình tiêu chuẩn: Học phí trung bình dao động từ 31,26 - 36,59 triệu đồng/năm tùy ngành. Riêng ngành Dược học có mức học phí là 68,46 triệu đồng/năm.",
     "source_doc_id": "hoc-bong-tdtu-2026"
   },
   {
@@ -78,15 +150,81 @@
     "source_doc_id": "hoc-bong-tdtu-2026"
   },
   {
+    "question": "Học bổng Nhà nước tại TDTU áp dụng theo nghị định nào và cho ngành nào?",
+    "expected_answer": "Theo Nghị định số 179/2026/NĐ-CP, cho sinh viên các ngành khoa học cơ bản, kỹ thuật then chốt và công nghệ chiến lược.",
+    "expected_context": "Theo Nghị định số 179/2026/NĐ-CP, sinh viên/học viên các ngành khoa học cơ bản, kỹ thuật then chốt và công nghệ chiến lược có thể được hưởng chính sách học bổng, hỗ trợ sinh hoạt phí.",
+    "source_doc_id": "hoc-bong-tdtu-2026"
+  },
+  {
     "question": "Học bổng JAIF của VJU dành cho ai và bao gồm những gì?",
-    "expected_answer": "Dành cho công dân Campuchia, Lào và Myanmar, gồm 100% học phí (khoảng 110 triệu VND), phí nhập học, sinh hoạt phí 250 USD/tháng, vé máy bay và bảo hiểm y tế; có 10 suất.",
+    "expected_answer": "Dành cho công dân Campuchia, Lào và Myanmar; gồm 100% học phí (khoảng 110 triệu VND), phí nhập học, sinh hoạt phí 250 USD/tháng, vé máy bay và bảo hiểm y tế; có 10 suất.",
     "expected_context": "JAIF Scholarship: Coverage 100% tuition fee (approximately 110 million VND), plus enrollment fee, admission fee, living expenses of 250 USD/month, airfare, and health insurance. Eligibility: nationals of Cambodia, Laos, and Myanmar. Quota: 10 awards.",
     "source_doc_id": "hoc-bong-vju-2025"
   },
   {
+    "question": "Học phí toàn khóa 2 năm tại VJU là bao nhiêu?",
+    "expected_answer": "92.000.000 VND cho sinh viên Việt Nam và 110.000.000 VND cho sinh viên nước ngoài.",
+    "expected_context": "Tuition Fees (full 2-year training period): Vietnamese students 92,000,000 VND. Foreign students 110,000,000 VND.",
+    "source_doc_id": "hoc-bong-vju-2025"
+  },
+  {
+    "question": "Học bổng Principal của VJU hỗ trợ bao nhiêu phần trăm học phí?",
+    "expected_answer": "50% học phí, dành cho sinh viên khó khăn tài chính và chỉ cấp một lần.",
+    "expected_context": "The Principal Scholarship covers 50% of the tuition fee for students facing financial hardship. It is awarded once (non-recurring).",
+    "source_doc_id": "hoc-bong-vju-2025"
+  },
+  {
+    "question": "Sinh viên Việt Nam tại VJU được hỗ trợ học phí như thế nào?",
+    "expected_answer": "Được miễn 100% học phí học kỳ đầu tiên, bao gồm cả phí nhập học và phí tuyển sinh.",
+    "expected_context": "Vietnamese students receive 100% tuition coverage for the first semester only, including the enrollment fee and admission fee.",
+    "source_doc_id": "hoc-bong-vju-2025"
+  },
+  {
     "question": "Học bổng khuyến khích học tập của Bách khoa Hà Nội chia làm mấy mức và tiêu chí ra sao?",
-    "expected_answer": "Ba mức: loại A cần GPA từ 3.6 và rèn luyện từ 90 (bằng 150% học phí), loại B cần GPA từ 3.2 và rèn luyện từ 80 (120% học phí), loại C cần GPA từ 2.5 và rèn luyện từ 65 (100% học phí).",
-    "expected_context": "Loại A: GPA từ 3.6 trở lên và điểm rèn luyện từ 90 trở lên — giá trị bằng 150% học phí. Loại B: GPA từ 3.2 trở lên và điểm rèn luyện từ 80 trở lên — giá trị bằng 120% học phí. Loại C: GPA từ 2.5 trở lên và điểm rèn luyện từ 65 trở lên — giá trị bằng 100% học phí.",
+    "expected_answer": "Ba mức: loại A cần GPA từ 3.6 và rèn luyện từ 90 (150% học phí), loại B cần GPA từ 3.2 và rèn luyện từ 80 (120% học phí), loại C cần GPA từ 2.5 và rèn luyện từ 65 (100% học phí).",
+    "expected_context": "Loại A: GPA từ 3.6 trở lên và điểm rèn luyện từ 90 trở lên - giá trị bằng 150% học phí. Loại B: GPA từ 3.2 trở lên và điểm rèn luyện từ 80 trở lên - 120% học phí. Loại C: GPA từ 2.5 trở lên và điểm rèn luyện từ 65 trở lên - 100% học phí.",
     "source_doc_id": "ho-tro-tai-chinh-hust"
+  },
+  {
+    "question": "Sinh viên HUST được vay vốn tín dụng ưu đãi tối đa bao nhiêu?",
+    "expected_answer": "Tối đa 4.000.000 đồng/tháng, trong 10 tháng mỗi năm học.",
+    "expected_context": "Mức vay tối đa: 4.000.000 đồng/tháng x 10 tháng/năm học.",
+    "source_doc_id": "ho-tro-tai-chinh-hust"
+  },
+  {
+    "question": "Học bổng Trần Đại Nghĩa của HUST dành cho ai và tổng quỹ bao nhiêu?",
+    "expected_answer": "Dành cho sinh viên hoàn cảnh khó khăn nhưng giàu ý chí vươn lên; hai mức 100% hoặc 50% học phí (5-10 triệu đồng/sinh viên), tổng quỹ khoảng 3 tỷ đồng mỗi năm.",
+    "expected_context": "Học bổng Trần Đại Nghĩa: sinh viên có hoàn cảnh khó khăn nhưng giàu ý chí vươn lên. Hai mức: 100% hoặc 50% học phí, tương đương 5.000.000 - 10.000.000 đồng/sinh viên. Tổng quỹ hằng năm: khoảng 3 tỷ đồng.",
+    "source_doc_id": "ho-tro-tai-chinh-hust"
+  },
+  {
+    "question": "Điều kiện xin học bổng trao đổi sinh viên của HUST là gì?",
+    "expected_answer": "Sinh viên từ năm thứ 3 trở lên, CPA từ 3.2 và điểm rèn luyện từ 80 trở lên; thời gian học ở nước ngoài từ 1 đến 12 tháng.",
+    "expected_context": "Học bổng trao đổi sinh viên. Điều kiện: sinh viên từ năm thứ 3 trở lên, CPA từ 3.2 trở lên, điểm rèn luyện từ 80 trở lên. Thời gian học tập ở nước ngoài: từ 1 đến 12 tháng.",
+    "source_doc_id": "ho-tro-tai-chinh-hust"
+  },
+  {
+    "question": "Năm học 2026-2027 học bổng Đinh Thiện Lý phân bổ tổng cộng bao nhiêu suất?",
+    "expected_answer": "Tổng 192 suất, gồm 59 suất cho sinh viên đang nhận, 62 tân sinh viên, 59 sinh viên năm cuối và 12 suất cho sinh viên hoàn cảnh đặc biệt.",
+    "expected_context": "Tổng: 59 (SV đang nhận HB 2025-2026), 62 (tân sinh viên), 59 (SV năm cuối), 12 (SV hoàn cảnh đặc biệt), tổng 192.",
+    "source_doc_id": "hoc-bong-dinh-thien-ly"
+  },
+  {
+    "question": "Mỗi suất học bổng Đinh Thiện Lý gồm những gì?",
+    "expected_answer": "100% học phí thực tế các học phần thuộc chuyên ngành đã đăng ký; không chi trả môn ngoài chương trình, văn bằng thứ hai và môn học lại. Ngoài ra có khóa đào tạo kỹ năng, thực tập và hoạt động cộng đồng.",
+    "expected_context": "Mỗi suất học bổng gồm 100% học phí thực tế đối với các học phần liên quan thuộc chuyên ngành đã đăng ký. Các môn học/tín chỉ ngoài chương trình chuyên ngành và các môn học lại sẽ không được Quỹ chi trả.",
+    "source_doc_id": "hoc-bong-dinh-thien-ly"
+  },
+  {
+    "question": "Sinh viên năm nhất muốn xin học bổng Đinh Thiện Lý cần đạt thứ hạng nào?",
+    "expected_answer": "Thuộc TOP 10% thí sinh trúng tuyển có điểm đầu vào cao nhất của khoa/ngành; sinh viên mồ côi là TOP 20%.",
+    "expected_context": "Sinh viên năm nhất: thuộc TOP 10% (top 20% đối với sinh viên mồ côi) thí sinh trúng tuyển có điểm đầu vào cao nhất của khoa/ngành, không phân biệt phương thức xét tuyển.",
+    "source_doc_id": "hoc-bong-dinh-thien-ly"
+  },
+  {
+    "question": "Để duy trì học bổng Đinh Thiện Lý, sinh viên phải đạt CGPA bao nhiêu và tham gia bao nhiêu hoạt động?",
+    "expected_answer": "CGPA từ 2.0 trở lên (thang 4.0) hoặc từ 8.0 trở lên (thang 10), không trượt môn nào, và bắt buộc tham gia ít nhất 4 dự án/sự kiện do Quỹ tổ chức mỗi năm học.",
+    "expected_context": "Duy trì kết quả học tập tốt, với điểm trung bình tích lũy (CGPA) từ 2 trở lên (theo thang điểm 4.0) hoặc từ 8.0 trở lên (theo thang điểm 10); Không trượt môn học nào (điểm F). Sinh viên bắt buộc tham gia hoặc đóng góp vào ít nhất 4 dự án/sự kiện do Quỹ tổ chức trong mỗi năm học.",
+    "source_doc_id": "hoc-bong-dinh-thien-ly"
   }
 ]
