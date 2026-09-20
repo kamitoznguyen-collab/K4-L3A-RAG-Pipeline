@@ -41,22 +41,66 @@ DEFAULT_TOP_K = 5
 CANDIDATE_MULTIPLIER = 2
 
 
-def expand_query(query: str) -> str:
-    """Hook biến đổi query trước khi dense search (HyDE, query expansion...).
+# Hai tính năng dưới đây bật/tắt được để chạy A/B. Xem
+# group_project/evaluation/experiments/hai.md.
+USE_HYDE = os.getenv("USE_HYDE", "false").lower() == "true"
+USE_CROSS_ENCODER = os.getenv("USE_CROSS_ENCODER", "false").lower() == "true"
 
-    Mặc định trả nguyên query. Ai làm HyDE thì thay thân hàm này, không cần
-    sửa retrieve().
+# Số ứng viên RRF đưa cho cross-encoder chấm lại, tính theo bội của top_k.
+RERANK_POOL_MULTIPLIER = 4
+
+HYDE_PROMPT = """Viết một đoạn văn ngắn (3-4 câu) trả lời câu hỏi dưới đây, theo
+văn phong của một văn bản quy định hoặc thông báo học bổng của trường đại học.
+
+Bạn không có tài liệu để tra cứu, nên cứ viết một câu trả lời hợp lý. Đoạn văn
+này chỉ dùng để tìm kiếm, không hiển thị cho ai, nên không cần chính xác — chỉ
+cần đúng văn phong và đúng loại thuật ngữ."""
+
+
+def expand_query(query: str) -> str:
+    """HyDE — embed một câu trả lời giả định thay vì embed câu hỏi.
+
+    Câu hỏi và tài liệu khác nhau về văn phong: câu hỏi là "điều kiện xét học
+    bổng UET là gì?", còn chunk chứa đáp án lại là danh sách "Kết quả học tập
+    đạt loại Khá trở lên". Trong không gian vector hai thứ đó không gần nhau.
+    Một câu trả lời giả định do LLM sinh ra lại mang đúng văn phong tài liệu
+    nên gần chunk đúng hơn.
+
+    Provider lỗi thì trả nguyên query — retrieval kém đi chứ không crash.
     """
-    return query
+    if not USE_HYDE:
+        return query
+
+    from .task10_generation import call_llm
+
+    try:
+        hypothetical = call_llm(HYDE_PROMPT, query).strip()
+    except Exception as error:
+        print(f"HyDE lỗi, dùng query gốc: {error}")
+        return query
+
+    if not hypothetical:
+        return query
+    # Giữ cả query gốc: câu trả lời giả có thể lạc đề hoàn toàn, để nguyên
+    # query làm neo thì kết quả không tệ hơn baseline quá nhiều.
+    return f"{query}\n\n{hypothetical}"
 
 
 def post_rerank(query: str, results: list[dict], top_k: int) -> list[dict]:
-    """Hook xếp hạng lại sau RRF (cross-encoder, LLM rerank...).
+    """Chấm lại sau RRF bằng cross-encoder.
 
-    Mặc định trả nguyên kết quả. Ai làm cross-encoder thì thay thân hàm này.
-    Output phải giữ đúng SearchResult contract.
+    Cross-encoder lỗi thì trả nguyên kết quả RRF — pipeline không crash.
     """
-    return results
+    if not USE_CROSS_ENCODER or not results:
+        return results
+
+    from .task7_reranking import rerank_cross_encoder
+
+    try:
+        return rerank_cross_encoder(query, results, top_k=top_k)
+    except Exception as error:
+        print(f"Cross-encoder lỗi, giữ thứ tự RRF: {error}")
+        return results
 
 
 def retrieve(
@@ -81,7 +125,10 @@ def retrieve(
         sparse = []
 
     if use_reranking:
-        hybrid = post_rerank(query, rerank_rrf([dense, sparse], top_k=top_k), top_k)
+        # Cross-encoder cần pool rộng hơn top_k mới có gì để xếp lại; không bật
+        # thì RRF cắt thẳng xuống top_k như cũ.
+        pool = top_k * RERANK_POOL_MULTIPLIER if USE_CROSS_ENCODER else top_k
+        hybrid = post_rerank(query, rerank_rrf([dense, sparse], top_k=pool), top_k)
     else:
         hybrid = dense[:top_k]
 

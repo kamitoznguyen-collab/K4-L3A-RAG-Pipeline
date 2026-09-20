@@ -42,3 +42,58 @@ def rerank_rrf(
 
 if __name__ == "__main__":
     print("Implement xong; chạy `pytest tests/test_contracts.py -q` để kiểm tra.")
+
+
+# =============================================================================
+# Cross-encoder reranking
+# =============================================================================
+#
+# RRF chỉ nhìn thứ hạng, không nhìn nội dung: nó không biết chunk nào thực sự
+# trả lời được câu hỏi. Cross-encoder đọc cả cặp (query, chunk) cùng lúc nên
+# chấm được độ liên quan thật, đổi lại phải chạy một lượt model cho mỗi cặp.
+#
+# Đặt sau RRF chứ không thay RRF: RRF thu hẹp từ ~20 ứng viên xuống top_k,
+# cross-encoder chỉ chấm lại số ít đó nên chi phí kiểm soát được.
+
+import os
+
+CROSS_ENCODER_MODEL = os.getenv(
+    "CROSS_ENCODER_MODEL", "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+)
+
+_CROSS_ENCODER = None
+
+
+def _get_cross_encoder():
+    """Load cross-encoder một lần rồi tái sử dụng."""
+    global _CROSS_ENCODER
+    if _CROSS_ENCODER is None:
+        from sentence_transformers import CrossEncoder
+
+        _CROSS_ENCODER = CrossEncoder(CROSS_ENCODER_MODEL)
+    return _CROSS_ENCODER
+
+
+def rerank_cross_encoder(
+    query: str, candidates: list[dict], top_k: int = 5
+) -> list[dict]:
+    """Chấm lại candidates bằng cross-encoder và sort theo điểm mới.
+
+    Giữ nguyên `retrieval_method` của từng item: cross-encoder chỉ đổi thứ tự,
+    không đổi việc chunk đó đến từ đường retrieval nào.
+    """
+    if not candidates or top_k <= 0:
+        return []
+
+    model = _get_cross_encoder()
+    pairs = [(query, item["content"]) for item in candidates]
+    scores = model.predict(pairs)
+
+    reranked = []
+    for item, score in zip(candidates, scores):
+        result = dict(item)
+        result["score"] = float(score)
+        reranked.append(result)
+
+    reranked.sort(key=lambda item: item["score"], reverse=True)
+    return reranked[:top_k]
