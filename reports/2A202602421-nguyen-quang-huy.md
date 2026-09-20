@@ -24,7 +24,8 @@
 | Task 9: retrieval pipeline | Điều phối dense + BM25 → RRF một lần → fallback theo cosine score gốc; hiệu chỉnh `SCORE_THRESHOLD` | `src/task9_retrieval_pipeline.py` | Done |
 | Task 10: generation | Lost-in-the-middle reordering, context kèm title/source, citation `[Document N]`, safe refusal | `src/task10_generation.py` | Done |
 | Chatbot UI | Streamlit hiển thị câu trả lời + panel nguồn (title, file, doc_type, chunk index, score, retrieval method) | `app.py` | Done |
-| Evaluation | Golden dataset 15 câu bám nguyên văn corpus, phủ 9/10 tài liệu; pipeline Ragas 4 metric, A/B dense-only vs hybrid+RRF, xuất báo cáo | `group_project/evaluation/` | Done |
+| Evaluation nền | Dựng golden dataset ban đầu 15 câu bám nguyên văn corpus, pipeline Ragas 4 metric, A/B dense-only với hybrid + RRF và xuất báo cáo | `group_project/evaluation/`, các commit từ `b4e7322` đến `1da5193` | Done |
+| Tích hợp | Chuẩn bị các hook độc lập `expand_query()` / `post_rerank()`, chia nhánh tính năng và hợp nhất ba gói cải tiến không xung đột | `src/task9_retrieval_pipeline.py`, `WORK_SPLIT.md`, nhánh `integration` | Done |
 
 Kiểm chứng: `pytest -q` → 20/20 pass (15 contract + 5 acceptance).
 
@@ -55,11 +56,16 @@ tái sử dụng cho bài này; danh mục nguồn đầy đủ ở `data/source
 
   | Metric | A (dense-only) | B (hybrid + RRF) | Δ |
   |---|---:|---:|---:|
-  | Faithfulness | 0.939 | 0.961 | +0.022 |
-  | Answer relevance | 0.858 | 0.864 | +0.006 |
-  | Context recall | 1.000 | 1.000 | +0.000 |
-  | Context precision | 0.967 | 0.963 | −0.003 |
-  | **Average** | 0.941 | 0.947 | **+0.006** |
+  | Faithfulness | 0.544 | 0.779 | +0.234 |
+  | Answer relevance | 0.581 | 0.843 | +0.262 |
+  | Context recall | 0.600 | 0.867 | +0.267 |
+  | Context precision | 0.372 | 0.490 | +0.118 |
+  | **Average** | 0.524 | 0.745 | **+0.220** |
+
+- **Kết quả bản tích hợp cuối (Ragas, 38 câu):** Config A đạt **0.676**,
+  Config B đạt **0.803**; Config B cao hơn **+0.126** và có 4/38 câu bị từ
+  chối. Đây là kết quả sau khi hợp nhất contextual chunking với dataset/UI mở
+  rộng; cross-encoder và HyDE vẫn là tùy chọn A/B, mặc định tắt.
 
 - **Lỗi đã phát hiện và cách xử lý:**
   - Ragas gọi `answer_relevancy` với `n=3` nhưng DeepSeek chỉ nhận `n=1` → trả `400 Invalid n value`. Xử lý: đặt `strictness=1`.
@@ -70,9 +76,11 @@ tái sử dụng cho bài này; danh mục nguồn đầy đủ ở `data/source
 ## Điều còn hạn chế
 
 - Corpus 10 tài liệu / 88 chunk vẫn là nhỏ so với hệ thống thật, và golden dataset được soạn từ chính corpus đó nên điểm Ragas có thiên lệch lạc quan.
-- Golden dataset mới phủ 9/10 tài liệu; `hoc-bong-dinh-thien-ly.md` (tài liệu dài nhất, 17KB) chưa có câu hỏi nào.
+- Golden dataset hiện có 38 câu, phủ 10/10 tài liệu, nhưng vẫn được soạn từ
+  chính corpus nên phù hợp để so cấu hình hơn là tuyên bố chất lượng tuyệt đối.
 - PageIndex fallback viết xong nhưng chưa kiểm chứng end-to-end vì chưa có `PAGEINDEX_API_KEY`.
-- **Nếu có thêm thời gian:** việc đầu tiên tôi làm là mở rộng golden dataset lên 30–40 câu phủ đều toàn bộ tài liệu, để chênh lệch A/B đủ tin cậy thay vì nằm trong vùng nhiễu như hiện tại.
+- **Nếu có thêm thời gian:** việc đầu tiên tôi làm là chạy PageIndex thật với
+  API key hợp lệ và bổ sung integration test cho đường fallback.
 
 ## Xác nhận đóng góp
 

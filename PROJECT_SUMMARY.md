@@ -59,14 +59,23 @@ Số liệu đánh giá không nằm ở đây — chúng nằm trong
 
 - **Streamlit (`app.py`):** hiển thị câu trả lời kèm panel nguồn — tiêu đề, link
   URL gốc, tên file, loại tài liệu, chunk index, score và retrieval method.
-- **Evaluation:** golden dataset 15 cặp Q&A bám nguyên văn corpus, mỗi case kèm
-  đoạn văn gốc trong `expected_context` và `source_doc_id`. Đo 4 metric Ragas và
-  so sánh A/B giữa dense-only và hybrid + RRF.
-- Kết quả: hybrid + RRF hơn dense-only **+0.220** điểm trung bình. Số câu bị từ
-  chối vì thiếu chunk giảm từ 6/15 xuống 2/15.
+- **Evaluation:** golden dataset 38 cặp Q&A bám nguyên văn corpus, phủ 10/10 tài
+  liệu; mỗi case kèm đoạn văn gốc trong `expected_context` và `source_doc_id`.
+  Đo 4 metric Ragas và so sánh A/B giữa dense-only và hybrid + RRF.
+- Kết quả tích hợp cuối: Config A đạt **0.676**, Config B đạt **0.803**; hybrid
+  + RRF hơn dense-only **+0.126** điểm trung bình. Config B có 4/38 câu bị từ
+  chối an toàn do không lấy được đủ ngữ cảnh.
 - `eval_pipeline.py` hỗ trợ cả Ragas 0.1.x và 0.4.x, và **không có nhánh sinh
-  điểm giả**: thiếu API key thì script dừng và báo lỗi. Phần phân tích và thí
-  nghiệm giữ ở `analysis.md` / `experiments.md` nên chạy lại eval không xoá mất.
+  điểm giả**: thiếu API key thì script dừng và báo lỗi; nếu toàn bộ phép chấm
+  đồng loạt trả 0 do provider throttle, guard sẽ dừng thay vì ghi đè một báo cáo
+  0.000. Phần phân tích và thí nghiệm giữ ở `analysis.md` / `experiments/` nên
+  chạy lại eval không xoá mất.
+
+Ba gói cải tiến đã được hợp nhất trên nhánh `integration`:
+
+- Contextual chunking: thêm tiêu đề vào text đem embed nhưng giữ nguyên content.
+- Cross-encoder reranking và HyDE: bật/tắt độc lập bằng biến môi trường để A/B.
+- Dataset 38 câu, conversation memory và citation highlighting trên Streamlit.
 
 ## 6. Kiểm thử
 
@@ -75,15 +84,16 @@ Python 3.12, không gọi network.
 
 ## 7. Những chỗ còn hạn chế
 
-- Điểm từng câu phân cực: hoặc ~0.8–1.0, hoặc đúng 0.000. Mọi case 0.000 đều là
-  safe refusal vì retrieval không lấy được chunk chứa đáp án — đây là điểm nghẽn
-  lớn nhất, không phải lỗi generation.
+- Một số câu vẫn nhận 0.000 do safe refusal khi retrieval không lấy được chunk
+  chứa đáp án. Đây là điểm nghẽn retrieval, không phải hallucination của bước
+  generation.
 - Corpus 10 tài liệu / 88 chunk vẫn nhỏ, và golden dataset soạn từ chính corpus
-  đó nên điểm có thiên lệch lạc quan. Dataset mới phủ 9/10 tài liệu;
-  `hoc-bong-dinh-thien-ly.md` (dài nhất, 17KB) chưa có câu hỏi nào.
+  đó nên điểm có thiên lệch lạc quan. Bộ 38 câu hiện phủ đủ 10/10 tài liệu nhưng
+  chưa thay thế được đánh giá trên dữ liệu độc lập.
 - Hybrid không thắng tuyệt đối: câu về học bổng JAIF của VJU bị RRF làm tệ đi so
   với dense-only.
 - PageIndex fallback chưa được kiểm chứng end-to-end (thiếu API key).
-- Chưa làm phần bonus về tính năng (HyDE/query expansion, cross-encoder reranker,
-  conversation memory, deploy online) — hai thí nghiệm đã chạy là về chunking và
-  độ tin cậy của phép đo, ghi trong `experiments.md`.
+- Cross-encoder tăng chất lượng nhưng tăng latency khoảng 15 lần; HyDE tăng chi
+  phí khoảng 32 lần và thêm một lời gọi LLM mỗi query, nên cả hai mặc định tắt.
+- Conversation memory mới được kiểm chứng bằng demo; chưa có golden dataset hội
+  thoại nhiều lượt để chấm tự động.
