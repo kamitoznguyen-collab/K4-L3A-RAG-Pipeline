@@ -1,12 +1,9 @@
-"""Chatbot RAG tra cứu dịch vụ đại học: học bổng, hỗ trợ tài chính, thư viện."""
-
-import difflib
-import html
+"""Chatbot RAG hỗ trợ khách hàng sàn thương mại điện tử."""
 
 import streamlit as st
 from dotenv import load_dotenv
 
-from src.task10_generation import call_llm, generate_with_citation
+from src.task10_generation import generate_with_citation
 
 
 load_dotenv()
@@ -22,90 +19,6 @@ RETRIEVAL_LABELS = {
     "pageindex": "PageIndex fallback (vectorless)",
     "none": "Không tìm được nguồn nào",
 }
-
-# Số lượt hội thoại gần nhất đưa vào prompt rewrite. Đủ để hiểu "cái đó", "còn
-# gì nữa" mà không làm prompt phình ra theo độ dài cuộc trò chuyện.
-HISTORY_TURNS = 3
-
-# Đoạn trùng ngắn hơn mức này thường là hư từ ("và", "của"), highlight vào chỉ
-# làm rối mắt.
-MIN_HIGHLIGHT_CHARS = 12
-
-REWRITE_PROMPT = """Viết lại câu hỏi cuối thành một câu đứng độc lập, hiểu được
-mà không cần đọc lịch sử hội thoại.
-
-Chỉ trả về đúng câu hỏi đã viết lại, không giải thích, không thêm dấu ngoặc.
-Nếu câu hỏi cuối vốn đã đứng độc lập được thì trả lại nguyên văn."""
-
-
-def rewrite_followup(query: str, history: list[dict]) -> str:
-    """Biến câu hỏi phụ thuộc ngữ cảnh thành câu đứng độc lập.
-
-    Không có lịch sử thì trả nguyên query. LLM lỗi cũng trả nguyên query —
-    retrieval kém đi ở câu đó chứ chatbot không chết.
-    """
-    if not history:
-        return query
-
-    lines = []
-    for message in history[-HISTORY_TURNS * 2 :]:
-        role = "Người dùng" if message["role"] == "user" else "Trợ lý"
-        lines.append(f"{role}: {message['content'][:300]}")
-
-    conversation = "\n".join(lines)
-    try:
-        rewritten = call_llm(
-            REWRITE_PROMPT,
-            f"Lịch sử hội thoại:\n{conversation}\n\nCâu hỏi cuối: {query}",
-        ).strip()
-    except Exception as error:
-        print(f"Rewrite follow-up lỗi, dùng câu hỏi gốc: {error}")
-        return query
-
-    return rewritten or query
-
-
-def highlight_overlap(chunk_text: str, answer: str) -> str:
-    """Bôi vàng những đoạn trong chunk mà câu trả lời dùng lại gần như nguyên văn.
-
-    Dùng difflib so khớp chuỗi con chung thay vì gọi LLM: rẻ, tức thì, và không
-    thêm một nguồn bịa đặt nữa vào khâu hiển thị nguồn.
-    """
-    if not answer.strip():
-        return html.escape(chunk_text)
-
-    matcher = difflib.SequenceMatcher(None, chunk_text, answer, autojunk=False)
-    spans = [
-        (block.a, block.a + block.size)
-        for block in matcher.get_matching_blocks()
-        if block.size >= MIN_HIGHLIGHT_CHARS
-    ]
-
-    if not spans:
-        return html.escape(chunk_text)
-
-    # Gộp các đoạn dính liền nhau, tránh sinh ra </mark><mark> vô nghĩa.
-    merged: list[list[int]] = []
-    for start, end in spans:
-        if merged and start <= merged[-1][1]:
-            merged[-1][1] = max(merged[-1][1], end)
-        else:
-            merged.append([start, end])
-    spans = [(start, end) for start, end in merged]
-
-    parts = []
-    cursor = 0
-    for start, end in spans:
-        parts.append(html.escape(chunk_text[cursor:start]))
-        parts.append(
-            "<mark style='background:#fde68a;color:inherit;'>"
-            + html.escape(chunk_text[start:end])
-            + "</mark>"
-        )
-        cursor = end
-    parts.append(html.escape(chunk_text[cursor:]))
-    return "".join(parts)
-
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -129,9 +42,7 @@ with st.sidebar:
         st.rerun()
 
 
-def render_sources(
-    sources: list[dict], retrieval_source: str, answer: str = ""
-) -> None:
+def render_sources(sources: list[dict], retrieval_source: str) -> None:
     """Hiển thị nguồn để người đọc đối chiếu được từng citation."""
     label = RETRIEVAL_LABELS.get(retrieval_source, retrieval_source)
     if not sources:
@@ -154,12 +65,7 @@ def render_sources(
                 f"`{source.get('score', 0):.4f}` · "
                 f"`{source.get('retrieval_method', '?')}`"
             )
-            st.markdown(
-                "<div style='font-size:0.85em;opacity:0.85;white-space:pre-wrap;'>"
-                + highlight_overlap(source["content"], answer)
-                + "</div>",
-                unsafe_allow_html=True,
-            )
+            st.caption(source["content"])
             if index < len(sources):
                 st.divider()
 
@@ -178,14 +84,11 @@ for message in st.session_state.messages:
             render_sources(
                 message.get("sources", []),
                 message.get("retrieval_source", "none"),
-                message["content"],
             )
 
 query = st.chat_input("Nhập câu hỏi...")
 
 if query:
-    # Rewrite trước khi append, để lịch sử chưa chứa chính câu hỏi này.
-    history = list(st.session_state.messages)
     st.session_state.messages.append({"role": "user", "content": query})
 
     with st.chat_message("user"):
@@ -194,10 +97,7 @@ if query:
     with st.chat_message("assistant"):
         with st.spinner("Đang tìm nguồn và soạn câu trả lời..."):
             try:
-                search_query = rewrite_followup(query, history)
-                if search_query != query:
-                    st.caption(f"Hiểu câu hỏi thành: *{search_query}*")
-                result = generate_with_citation(search_query, top_k=top_k)
+                result = generate_with_citation(query, top_k=top_k)
             except Exception as error:
                 # Provider hoặc vector store lỗi thì báo rõ, không để UI chết.
                 result = {
@@ -207,9 +107,7 @@ if query:
                 }
 
         st.markdown(result["answer"])
-        render_sources(
-            result["sources"], result["retrieval_source"], result["answer"]
-        )
+        render_sources(result["sources"], result["retrieval_source"])
 
     st.session_state.messages.append(
         {
