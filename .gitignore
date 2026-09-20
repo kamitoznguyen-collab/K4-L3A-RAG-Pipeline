@@ -35,6 +35,13 @@ htmlcov/
 .env.*
 !.env.example
 
+# Vector store (sinh lại được bằng `python -m src.task4_chunking_indexing`)
+chroma_db/
+
+# Sinh lại mỗi lần chạy eval. Nếu commit thì ba nhánh feature sẽ conflict
+# ở đây mỗi lần merge. RESULT.md vẫn commit vì acceptance test đọc nó.
+group_project/evaluation/per_question_scores.json
+
 # Temp PDF conversion cache
 data/_tmp_pdf/
 
